@@ -24,7 +24,7 @@ parameters:
   # Hard because used as parameters in many calls.
   plugin_version:
     type: string
-    default: "1.0.0"
+    default: "1.1.0"
   eos_client_id:
     type: string
     default: "xyza7891FuZAOxuG1mBmi3Vun3KNJHBh"
@@ -182,7 +182,7 @@ jobs:
           name: Package test app
           command: |
             mkdir Payload
-            mv "demo/platforms/ios/build/Release-iphonesimulator/Cordova EOS Plugin Demo.app" Payload
+            mv "demo/platforms/ios/build/Release-iphonesimulator/Genvid Cordova EOS Demo.app" Payload
             zip -9r << pipeline.parameters.plugin_name >>-tests-<< pipeline.parameters.plugin_version >>.ipa Payload
       - store_artifacts:
           path: << pipeline.parameters.plugin_name >>-tests-<< pipeline.parameters.plugin_version >>.ipa

@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-eos",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Cordova EpicGame Online Services Plugin",
   "types": "./types/index.d.ts",
   "cordova": {
@@ -27,16 +27,16 @@
     "package": "npm pack && (cd tests && npm pack --pack-destination ..)",
     "clean:demo": "git clean -fxd ./demo",
     "setup:demo:config": "op inject -i demo/templates/eos_config.json -o demo/www/eos_config.json -f",
-    "setup:demo:cordova": "cd demo && npm init --workspaces=false -y && npm install -D cordova",
+    "setup:demo:cordova": "cd demo && npm init --workspaces=false -y && npm --prefix . install -D cordova --prefix .",
     "setup:demo": "npm run setup:demo:cordova && npm run setup:demo:config",
-    "setup:demo:android": "cd demo && cordova platform add android",
-    "build:demo:android": "cd demo && cordova build android",
-    "build:demo:android:release": "cd demo && cordova build android --release -- --packageType=bundle",
-    "run:android": "cd demo && cordova run android",
-    "setup:demo:ios": "cd demo && cordova platform add ios",
-    "build:demo:ios": "cd demo && cordova build ios",
-    "build:demo:ios:release": "cd demo && cordova build ios --release",
-    "run:ios": "cd demo && cordova run ios",
+    "setup:demo:android": "cd demo && npx --prefix . cordova platform add android",
+    "build:demo:android": "cd demo && npx --prefix . cordova build android",
+    "build:demo:android:release": "cd demo && npx --prefix . cordova build android --release -- --packageType=bundle",
+    "run:android": "cd demo && npx --prefix . cordova run android",
+    "setup:demo:ios": "cd demo && npx --prefix . cordova platform add ios",
+    "build:demo:ios": "cd demo && npx --prefix . cordova build ios",
+    "build:demo:ios:release": "cd demo && npx --prefix . cordova build ios --release",
+    "run:ios": "cd demo && npx --prefix . cordova run ios",
     "refresh:common": "npm run package && npm run clean:demo && npm run setup:demo",
     "refresh:android": "npm run refresh:common && npm run setup:demo:android && npm run build:demo:android",
     "refresh:ios": "npm run refresh:common && npm run setup:demo:ios && npm run build:demo:ios",
@@ -57,7 +57,6 @@
   },
   "devDependencies": {
     "@cordova/eslint-config": "^3.0.0",
-    "cordova": "^12.0.0",
     "eslint-plugin-promise": "^7.2.1",
     "shx": "^0.4.0"
   }
