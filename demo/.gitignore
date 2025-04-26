@@ -26,3 +26,5 @@ node_modules/
 /platforms/
 
 www/eos_config.json
+package.json
+package-lock.json

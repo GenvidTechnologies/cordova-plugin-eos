@@ -2,3 +2,5 @@
 /tests/
 /sdk-patch/
 /demo/
+/eos-sdk/
+*.tgz

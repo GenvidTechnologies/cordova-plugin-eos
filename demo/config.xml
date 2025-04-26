@@ -11,4 +11,5 @@
     <allow-intent href="https://*/*" />
     <plugin name="file://../cordova-plugin-eos-1.0.0.tgz" />
     <plugin name="file://../cordova-plugin-eos-tests-1.0.0.tgz" />
+    <plugin name="cordova-plugin-test-framework" />
 </widget>
