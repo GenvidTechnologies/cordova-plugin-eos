@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "download-sdk:android": "shx mkdir -p eos-sdk/android && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-Android-41373641-v1.17.0.zip --account-name burbankbuildwatcher --file eos-sdk/android/sdk.zip",
     "install-sdk:android:windows": "npm run download-sdk:android && 7z x eos-sdk/android/sdk.zip -oeos-sdk/android/",
     "package": "npm pack && (cd tests && npm pack --pack-destination ..)",
@@ -56,6 +57,7 @@
   },
   "devDependencies": {
     "@cordova/eslint-config": "^3.0.0",
+    "eslint-plugin-promise": "^7.2.1",
     "shx": "^0.4.0"
   }
 }
