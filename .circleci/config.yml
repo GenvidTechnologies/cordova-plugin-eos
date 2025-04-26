@@ -198,11 +198,19 @@ workflows:
           context:
             - burbank-onepassword
       - android:
+          filters:
+            tags:
+              # Only tags starting with at least one or more digits followed by a dot
+              only: /\d+\..*/
           requires:
             - packages
           context:
             - burbank-onepassword
       - ios:
+          filters:
+            tags:
+              # Only tags starting with at least one or more digits followed by a dot
+              only: /\d+\..*/
           requires:
             - packages
           context:
