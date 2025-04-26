@@ -1,0 +1,30 @@
+{
+  "name": "com.genvidtech.eosdemo",
+  "displayName": "Genvid Cordova EOS Demo",
+  "version": "1.0.0",
+  "description": "A test application to run the Genvid EOS Plugin tests.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Genvid Technologies, LLC",
+  "license": "MIT-0",
+  "devDependencies": {
+    "cordova": "^12.0.0",
+    "cordova-android": "^14.0.0",
+    "cordova-plugin-eos": "file:../cordova-plugin-eos-1.0.0.tgz",
+    "cordova-plugin-eos-tests": "file:../cordova-plugin-eos-tests-1.0.0.tgz"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-eos": {},
+      "file://../cordova-plugin-eos-1.0.0.tgz": {},
+      "file://../cordova-plugin-eos-tests-1.0.0.tgz": {},
+      "cordova-plugin-eos-tests": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}

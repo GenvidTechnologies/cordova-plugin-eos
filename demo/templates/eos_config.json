@@ -1,0 +1,9 @@
+{
+    "ProductName": "Cordova EOS Demo",
+    "ProductVersion": "1.0.0",
+    "ProductId": "op://Project-Burbank/Burbank ECom Game Client/Product ID",
+    "SandboxId": "op://Project-Burbank/Burbank ECom Game Client/Dev/Sandbox ID",
+    "DeploymentId": "op://Project-Burbank/Burbank ECom Game Client/Dev/Deployment ID",
+    "ClientId": "op://Project-Burbank/Burbank ECom Game Client/Cordova/Client ID",
+    "ClientSecret": "op://Project-Burbank/Burbank ECom Game Client/Cordova/credential"
+}
