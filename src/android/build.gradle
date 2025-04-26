@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+android {
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17", "-malign-double"
+                arguments "-DANDROID_STL=c++_shared", "-DEOS_SDK_PATH=${System.getenv('EOS_SDK_PATH')}", "-DAPP_BUILD_DIR=${buildDir}"
+            }
+        }
+        splits {
+            abi {
+                enable = true
+                reset()
+                include 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+                universalApk true
+            }
+        }
+        def jsonFile = layout.projectDirectory.file('src/main/assets/www/eos_config.json').asFile
+        def eosConfig = new groovy.json.JsonSlurper().parseText(jsonFile.text)
+        resValue("string", "eos_login_protocol_scheme", "eos." + eosConfig.ClientId.toLowerCase())
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CordovaEOS/CMakeLists.txt"
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["jniLibs"]
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.security:security-crypto:1.0.0'
+    implementation 'androidx.browser:browser:1.8.0'
+    implementation 'androidx.webkit:webkit:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation files("${System.getenv('EOS_SDK_PATH')}/Bin/Android/static-stdc++/aar/eossdk-StaticSTDC-release.aar")
+}
+
+tasks.register('unzipEosAar', Copy) {
+    from zipTree(file("${System.getenv('EOS_SDK_PATH')}/Bin/Android/static-stdc++/aar/eossdk-StaticSTDC-release.aar"))
+    into layout.buildDirectory.file('unpacked/eossdk-StaticSTDC-release')
+}
+
+tasks.named("preBuild") {
+    dependsOn { 'unzipEosAar' }
+}

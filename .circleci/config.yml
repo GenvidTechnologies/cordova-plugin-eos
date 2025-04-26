@@ -1,0 +1,209 @@
+version: 2.1
+
+orbs:
+  onepassword: onepassword/secrets@1.0.0
+  # slack: circleci/slack@4.13.3
+  azure-cli: circleci/azure-cli@1.2.2
+  node: circleci/node@7.1.0
+
+parameters:
+  # Slack params
+  slack_branch:
+    default: "main"
+    type: string
+  slack_channel_failure:
+    default: "#bot-circleci-builds"
+    type: string
+  slack_channel_success:
+    default: "#bot-circleci-builds"
+    type: string
+  plugin_name:
+    type: string
+    default: cordova-plugin-eos
+  # TODO: Extract from package.
+  # Hard because used as parameters in many calls.
+  plugin_version:
+    type: string
+    default: "1.0.0"
+  eos_client_id:
+    type: string
+    default: "xyza7891FuZAOxuG1mBmi3Vun3KNJHBh"
+  node_version:
+    type: string
+    default: "22.14"
+  onepassword_version:
+    type: string
+    default: "2.29.0"
+
+commands:
+  az-login:
+    steps:
+      - run:
+          name: Login to Azure
+          command: |
+            az login \
+              --service-principal \
+              --username ${AZURE_SP_APPID} \
+              --tenant ${AZURE_SP_TENANT} \
+              --password ${AZURE_SP_PASSWORD}
+
+jobs:
+  packages:
+    parameters:
+      onepassword-env:
+        type: string
+        default: '/tmp/op.env'
+    docker:
+      - image: cimg/node:<< pipeline.parameters.node_version >>
+    shell: op run --env-file="<< parameters.onepassword-env >>" -- /bin/bash -eo pipefail
+    steps:
+      - onepassword/install-cli:
+          shell: /bin/bash -eo pipefail
+          version: << pipeline.parameters.onepassword_version >>
+      - run:
+          shell: /bin/bash -eo pipefail
+          name: Setup secret environment and read from OnePassword
+          command: |
+            echo "Reading OnePassword environment file..."
+            op read "op://${BURBANK_ENV_FILE}" -o << parameters.onepassword-env >>
+      - checkout
+      - azure-cli/install
+      - az-login
+      - node/install-packages:
+          # Override to use cache
+          override-ci-command: npm install
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Package
+          command: |
+            npm run package
+            mkdir packages
+            mv *.tgz packages
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - '*.tgz'
+      - store_artifacts:
+          path: packages
+      - run:
+          name: Upload to Azure
+          command: |
+            TAG=<< pipeline.git.tag >>
+            BRANCH=<< pipeline.git.branch >>
+            if [ -z "${TAG}"]; then
+              export SLUG=branch/${BRANCH}
+            else
+              export SLUG=tags/${TAG}
+            fi
+
+            for file in `ls packages/*.tgz` ; do
+              az storage blob upload \
+                --overwrite \
+                -c  'cordova-plugin-eos' \
+                -n "${SLUG}/$(basename ${file})" \
+                --file "${file}"
+            done
+
+  android:
+    docker:
+      - image: cimg/android:2025.03-ndk
+    parameters:
+      onepassword-env:
+        type: string
+        default: '/tmp/op.env'
+    environment:
+      EOS_CLIENT_ID: << pipeline.parameters.eos_client_id >>
+    shell: op run --env-file="<< parameters.onepassword-env >>" -- /bin/bash -eo pipefail
+    steps:
+      - onepassword/install-cli:
+          version: << pipeline.parameters.onepassword_version >>
+      - run:
+          shell: /bin/bash -eo pipefail
+          name: Setup secret environment and read from OnePassword
+          command: |
+            echo "Reading OnePassword environment file..."
+            op read "op://${BURBANK_ENV_FILE}" -o << parameters.onepassword-env >>
+      - checkout
+      - azure-cli/install
+      - az-login
+      - node/install:
+          node-version: << pipeline.parameters.node_version >>
+      - attach_workspace:
+          at: packages
+      - run:
+          name: Copy packages
+          command: cp packages/*.tgz .
+      - run:
+          name: Install SDK
+          command: |
+            az storage blob download \
+                            --overwrite \
+                            -c '3rd-parties' \
+                            -n 'eos-sdk/EOS-SDK-Android-41373641-v1.17.0.zip' \
+                            --file eos-sdk.zip
+            mkdir -p eos-sdk/android
+            unzip eos-sdk.zip -d eos-sdk/android
+      - run:
+          name: Create test app
+          command: |
+            export EOS_SDK_PATH=${CIRCLE_WORKING_DIRECTORY}/eos-sdk/android/SDK
+            npm run setup:demo
+            npm run setup:demo:android
+            npm run build:demo:android:release
+      - store_artifacts:
+          path: demo/platforms/android/app/build/outputs/bundle/release/app-release.aab
+          destination: << pipeline.parameters.plugin_name >>-tests-<< pipeline.parameters.plugin_version>>.aab
+
+  ios:
+    macos:
+      xcode: 16.2.0
+    resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - onepassword/install-cli:
+          version: << pipeline.parameters.onepassword_version >>
+      - node/install:
+          node-version: << pipeline.parameters.node_version >>
+      - attach_workspace:
+          at: packages
+      - run:
+          name: Copy packages
+          command: cp packages/*.tgz .
+      - run:
+          name: Create test app
+          command: |
+            export EOS_SDK_PATH=${CIRCLE_WORKING_DIRECTORY}/eos-sdk/ios/SDK
+            npm run setup:demo
+            npm run setup:demo:ios
+            npm run build:demo:ios:release
+      - run:
+          name: Package test app
+          command: |
+            mkdir Payload
+            mv "demo/platforms/ios/build/Release-iphonesimulator/Cordova EOS Plugin Demo.app" Payload
+            zip -9r << pipeline.parameters.plugin_name >>-tests-<< pipeline.parameters.plugin_version >>.ipa Payload
+      - store_artifacts:
+          path: << pipeline.parameters.plugin_name >>-tests-<< pipeline.parameters.plugin_version >>.ipa
+
+workflows:
+  default:
+    jobs:
+      - packages:
+          filters:
+            tags:
+              # Only tags starting with at least one or more digits followed by a dot
+              only: /\d+\..*/
+          context:
+            - burbank-onepassword
+      - android:
+          requires:
+            - packages
+          context:
+            - burbank-onepassword
+      - ios:
+          requires:
+            - packages
+          context:
+            - burbank-onepassword
