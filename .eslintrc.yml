@@ -21,6 +21,8 @@ extends: '@cordova/eslint-config/browser'
 overrides:
     - files: [tests/**/*.js]
       extends: '@cordova/eslint-config/node-tests'
+    - files: [scripts/*.js]
+      extends: '@cordova/eslint-config/node'
 
 globals:
   cordova: true

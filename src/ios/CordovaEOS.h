@@ -19,12 +19,29 @@
 
 #import <UIKit/UIKit.h>
 #import <Cordova/CDVPlugin.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
-@interface CordovaEOS : CDVPlugin
+API_AVAILABLE(ios(12.0))
+@interface CordovaEOS : CDVPlugin<ASWebAuthenticationPresentationContextProviding>
 {}
 
-+ (NSString*)sdkVersion;
-
+// SDK commands
 - (void)getSDKVersion:(CDVInvokedUrlCommand*)command;
+- (void)initializeSDK:(CDVInvokedUrlCommand*)command;
+- (void)onConnect:(CDVInvokedUrlCommand*)command;
+- (void)onDisconnect:(CDVInvokedUrlCommand*)command;
+- (void)logs:(CDVInvokedUrlCommand*)command;
+// Auth commands
+- (void)isLoggedIn:(CDVInvokedUrlCommand*)command;
+- (void)getUsername:(CDVInvokedUrlCommand*)command;
+- (void)getAccountId:(CDVInvokedUrlCommand*)command;
+- (void)getAuthToken:(CDVInvokedUrlCommand*)command;
+- (void)loginPersistent:(CDVInvokedUrlCommand*)command;
+- (void)loginPortal:(CDVInvokedUrlCommand*)command;
+- (void)logout:(CDVInvokedUrlCommand*)command;
+// Ecom commands
+- (void)queryEntitlements:(CDVInvokedUrlCommand*)command;
+- (void)queryOffers:(CDVInvokedUrlCommand*)command;
+- (void)checkout:(CDVInvokedUrlCommand*)command;
 
 @end

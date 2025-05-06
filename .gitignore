@@ -1,3 +1,7 @@
 node_modules/
 *.tgz
 /eos-sdk/
+.DS_Store
+demo/build.json
+*.cer
+*.p12

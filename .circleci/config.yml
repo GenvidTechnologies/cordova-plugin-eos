@@ -24,7 +24,7 @@ parameters:
   # Hard because used as parameters in many calls.
   plugin_version:
     type: string
-    default: "1.1.0"
+    default: "1.2.0"
   eos_client_id:
     type: string
     default: "xyza7891FuZAOxuG1mBmi3Vun3KNJHBh"
@@ -46,6 +46,27 @@ commands:
               --username ${AZURE_SP_APPID} \
               --tenant ${AZURE_SP_TENANT} \
               --password ${AZURE_SP_PASSWORD}
+  ios-import-certs:
+    steps:
+      - run:
+          name: Install certificates
+          command: |
+            op read -n -o "${DEVELOPER_AUTHORITY_ID}.cer" \
+                          "op://${DEVELOPER_AUTHORITY_ITEM_PATH}/${DEVELOPER_AUTHORITY_ID}.cer"
+            op read -n -o "${DEVELOPMENT_CERTIFICATE_ID}.cer" \
+                          "op://${DEVELOPMENT_CERTIFICATE_ITEM_PATH}/${DEVELOPMENT_CERTIFICATE_ID}.cer"
+            op read -n -o "${DEVELOPMENT_CERTIFICATE_ID}.p12" \
+                          "op://${DEVELOPMENT_CERTIFICATE_ITEM_PATH}/${DEVELOPMENT_CERTIFICATE_ID}.p12"
+            security create-keychain -p 'tempPassword' ios-build.keychain
+            security import "${DEVELOPER_AUTHORITY_ID}.cer" -k ~/Library/Keychains/ios-build.keychain \
+              -T /usr/bin/codesign -t agg
+            security import ${DEVELOPMENT_CERTIFICATE_ID}.cer -k ~/Library/Keychains/ios-build.keychain \
+              -T /usr/bin/codesign -t agg
+            security import ${DEVELOPMENT_CERTIFICATE_ID}.p12 -k ~/Library/Keychains/ios-build.keychain \
+              -P "${DEVELOPMENT_CERTIFICATE_PASSWORD}" -T /usr/bin/codesign -t agg
+            security list-keychain -s ~/Library/Keychains/ios-build.keychain
+            security default-keychain -s ~/Library/Keychains/ios-build.keychain
+            security unlock-keychain -p 'tempPassword' ~/Library/Keychains/ios-build.keychain
 
 jobs:
   packages:
@@ -130,6 +151,9 @@ jobs:
       - az-login
       - node/install:
           node-version: << pipeline.parameters.node_version >>
+      - node/install-packages:
+          # Override to use cache
+          override-ci-command: npm install
       - attach_workspace:
           at: packages
       - run:
@@ -137,14 +161,7 @@ jobs:
           command: cp packages/*.tgz .
       - run:
           name: Install SDK
-          command: |
-            az storage blob download \
-                            --overwrite \
-                            -c '3rd-parties' \
-                            -n 'eos-sdk/EOS-SDK-Android-41373641-v1.17.0.zip' \
-                            --file eos-sdk.zip
-            mkdir -p eos-sdk/android
-            unzip eos-sdk.zip -d eos-sdk/android
+          command: npm run install-sdk:android:posix
       - run:
           name: Create test app
           command: |
@@ -160,17 +177,46 @@ jobs:
     macos:
       xcode: 16.2.0
     resource_class: macos.m1.medium.gen1
+    parameters:
+      onepassword-env:
+        type: string
+        default: '/tmp/op.env'
+    environment:
+      EOS_CLIENT_ID: << pipeline.parameters.eos_client_id >>
+    shell: op run --env-file="<< parameters.onepassword-env >>" -- /bin/bash --login -eo pipefail
     steps:
-      - checkout
       - onepassword/install-cli:
           version: << pipeline.parameters.onepassword_version >>
+      - run:
+          shell: /bin/bash -eo pipefail
+          name: Setup secret environment and read from OnePassword
+          command: |
+            echo "Reading OnePassword environment file..."
+            op read "op://${BURBANK_ENV_FILE}" -o << parameters.onepassword-env >>
+      - checkout
+      - run:
+          name: Install Azure CLI using Homebrew
+          environment:
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+          command: |
+            # BUR-4292: latest (2024-10-18) brew install azure-cli doesn't work.
+            curl -o /tmp/azure-cli.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/cae5fb68898fa52ba24ae573552162a1b9f83b74/Formula/a/azure-cli.rb
+            brew install --formula /tmp/azure-cli.rb
+      - az-login
       - node/install:
           node-version: << pipeline.parameters.node_version >>
+      - node/install-packages:
+          # Override to use cache
+          override-ci-command: npm install
       - attach_workspace:
           at: packages
       - run:
           name: Copy packages
           command: cp packages/*.tgz .
+      - run:
+          name: Install SDK
+          command: npm run install-sdk:ios:posix
+      - ios-import-certs
       - run:
           name: Create test app
           command: |

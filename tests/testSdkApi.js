@@ -35,7 +35,7 @@ const testSdkApi = function (createActionButton) {
                     eos.onLog();
                 }
             } catch (err) {
-                console.error(`Initialize error: ${err.message}`);
+                console.error(`Logs toggle error: ${err.message}`);
             }
         },
         'sdk'
