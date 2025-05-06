@@ -814,7 +814,7 @@ void CheckoutCompleteCallbackFn(const EOS_Ecom_CheckoutCallbackInfo* Data) {
         // Some checkout can returned empty;
         if (Data->TransactionId) {
             EOS_Ecom_HTransaction TransactionHandle;
-            EOS_Ecom_CopyTransactionByIdOptions CopyTransactionOptions{ 0 };
+            EOS_Ecom_CopyTransactionByIdOptions CopyTransactionOptions = { 0 };
             CopyTransactionOptions.ApiVersion = EOS_ECOM_COPYTRANSACTIONBYID_API_LATEST;
             CopyTransactionOptions.LocalUserId = Data->LocalUserId;
             CopyTransactionOptions.TransactionId = Data->TransactionId;
@@ -827,13 +827,13 @@ void CheckoutCompleteCallbackFn(const EOS_Ecom_CheckoutCallbackInfo* Data) {
                 CheckoutCompletionCB = nil;
                 return;
             } else {
-                EOS_Ecom_Transaction_GetEntitlementsCountOptions CountOptions{ 0 };
+                EOS_Ecom_Transaction_GetEntitlementsCountOptions CountOptions = { 0 };
                 CountOptions.ApiVersion = EOS_ECOM_TRANSACTION_GETENTITLEMENTSCOUNT_API_LATEST;
                 uint32_t EntitlementCount = EOS_Ecom_Transaction_GetEntitlementsCount(TransactionHandle, &CountOptions);
     
                 os_log(OS_LOG_DEFAULT, "New entitlements: %d", EntitlementCount);
     
-                EOS_Ecom_Transaction_CopyEntitlementByIndexOptions IndexOptions{ 0 };
+                EOS_Ecom_Transaction_CopyEntitlementByIndexOptions IndexOptions = { 0 };
                 IndexOptions.ApiVersion = EOS_ECOM_TRANSACTION_COPYENTITLEMENTBYINDEX_API_LATEST;
                 for (IndexOptions.EntitlementIndex = 0; IndexOptions.EntitlementIndex < EntitlementCount; ++IndexOptions.EntitlementIndex)
                 {
@@ -898,9 +898,8 @@ void CheckoutCompleteCallbackFn(const EOS_Ecom_CheckoutCallbackInfo* Data) {
     std::vector<std::string> ids;
     for(NSUInteger i = 0; i < length; ++i) {
         NSString* nsOfferId = [offers objectAtIndex:i];
-        const std::string utfOfferId{[nsOfferId cStringUsingEncoding:NSUTF8StringEncoding]};
-        ids.push_back(utfOfferId);
-        os_log(OS_LOG_DEFAULT, "Checking out offer %s [%d/%d]", utfOfferId.c_str(), (unsigned)i+1, (unsigned)length);
+        ids.emplace_back([nsOfferId cStringUsingEncoding:NSUTF8StringEncoding]);
+        os_log(OS_LOG_DEFAULT, "Checking out offer %s [%d/%d]", ids.back().c_str(), (unsigned)i+1, (unsigned)length);
         EOS_Ecom_CheckoutEntry entry;
         entry.ApiVersion = EOS_ECOM_CHECKOUTENTRY_API_LATEST;
         entry.OfferId = ids.back().c_str();
