@@ -284,14 +284,14 @@ dispatch_source_t _source = nil;
     [self runEOS:^{
         [self sendLoginStatus:@"inProgress"];
         [EOSWrapper LoginPersistentAuth:^(EOS_EResult Result){
-            if (Result != EOS_EResult::EOS_Success) {
-                NSString* error = [EOSWrapper ErrorAsString:Result];
-                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error];
-                [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
-            } else {
-                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
+            bool success = Result == EOS_EResult::EOS_Success;
+            NSString* message = [EOSWrapper ErrorAsString:Result];
+            if (!success) {
+                NSString* error = [NSString stringWithFormat:@"Login persistent error: %@",message];
+                [self sendLog: error];
             }
+            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"result":@(success)}];
+            [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
         }];
     }];
 }
@@ -299,13 +299,13 @@ dispatch_source_t _source = nil;
     [self runEOS:^{
         [self sendLoginStatus:@"inProgress"];
         [EOSWrapper LoginWithAccountPortal:self completion:^(EOS_EResult Result){
-            CDVPluginResult* result = nil;
-            if (Result != EOS_EResult::EOS_Success) {
-                NSString* error = [EOSWrapper ErrorAsString:Result];
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error];
-            } else {
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            bool success = Result == EOS_EResult::EOS_Success;
+            NSString* message = [EOSWrapper ErrorAsString:Result];
+            if (!success) {
+                NSString* error = [NSString stringWithFormat:@"Login portal error: %@",message];
+                [self sendLog: error];
             }
+            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"result":@(success)}];
             [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
         }];
     }];
@@ -313,13 +313,13 @@ dispatch_source_t _source = nil;
 - (void)logout:(CDVInvokedUrlCommand*)command  {
     [self runEOS:^{
         [EOSWrapper Logout:^(EOS_EResult Result){
-            CDVPluginResult* result = nil;
-            if (Result != EOS_EResult::EOS_Success) {
-                NSString* error = [EOSWrapper ErrorAsString:Result];
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error];
-            } else {
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            bool success = Result == EOS_EResult::EOS_Success;
+            NSString* message = [EOSWrapper ErrorAsString:Result];
+            if (!success) {
+                NSString* error = [NSString stringWithFormat:@"Logout error: %@",message];
+                [self sendLog: error];
             }
+            CDVPluginResult*  result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"result":@(success)}];
             [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
         }];
     }];
