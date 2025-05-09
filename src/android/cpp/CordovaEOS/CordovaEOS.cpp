@@ -530,6 +530,11 @@ void ShutdownSDK() {
     EOS_Shutdown();
 }
 
+ extern "C" JNIEXPORT void JNICALL
+ Java_com_genvidtech_cordova_eos_CordovaEOS_ShutdownSDK(JNIEnv *env, jobject thiz) {
+    ShutdownSDK();
+ }
+
 /** Unregister for login status updates for the EOS Auth Interface */
 void RemoveNotifyLoginStatusChanged() {
     OS_LOG("RemoveNotifyLoginStatusChanged: Unregister");

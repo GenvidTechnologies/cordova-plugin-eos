@@ -65,6 +65,17 @@ Eos.prototype.initializeSDK = function (sdkConfig, handler) {
     });
 };
 
+Eos.prototype.shutdownSDK = function () {
+    argscheck.checkArgs('', 'plugins.eos.shutdownSDK', arguments);
+    return new Promise((resolve, reject) => {
+        exec(resolve, rejectAsError(reject), this.SERVICE_NAME, 'shutdownSDK', []);
+    }).then(() => {
+        this.initialized = false;
+    });
+}
+
+
+
 Eos.prototype.onConnect = function () {
     argscheck.checkArgs('', 'plugins.eos.onConnect', arguments);
     return new Promise((resolve, reject) => {

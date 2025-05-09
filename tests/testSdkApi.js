@@ -8,7 +8,7 @@ exports.innerHTML = `
 const onLoginChanged = async function (result) {
     console.log(`login changed: ${result.status}`);
     try {
-        await updateStatus(result.status);
+        await updateStatus(result.status ?? "shutdown");
     } catch (err) {
         console.error(`Error on login changed: ${err.message}`);
     }
@@ -53,6 +53,21 @@ const testSdkApi = function (createActionButton) {
                 console.log('Initialized');
             } catch (err) {
                 console.error(`Initialize error: ${err.message}`);
+            }
+        },
+        'sdk'
+    );
+
+    createActionButton(
+        'Shutdown',
+        async function () {
+            try {
+                const eos = window.plugins.eos;
+                await eos.shutdownSDK();
+                updateSdkStatus();
+                console.log('Shutdown');
+            } catch (err) {
+                console.error(`Shutdown error: ${err.message}`);
             }
         },
         'sdk'

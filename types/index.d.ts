@@ -57,7 +57,8 @@ interface EosEcom {
 }
 
 interface EOSLoginStatus {
-    status: "loggedIn" | "loggedOut" | "inProgress";
+    // No status indicate the SDK was shutting down.
+    status?: "loggedIn" | "loggedOut" | "inProgress";
 }
 
 interface Log {
@@ -93,6 +94,7 @@ interface EOS {
     sdkVersion?: string;
     /** Get the EOS SDK version. */
     initializeSDK(config: EOSSDKConfig, handler: onLoginChanged): Promise<void>;
+    shutdownSDK(): Promise<void>;
     onConnect(): Promise<void>;
     onDisconnect(): Promise<void>;
     onLog(handler: onLog): Promise<void>;

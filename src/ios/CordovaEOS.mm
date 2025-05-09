@@ -82,6 +82,13 @@ dispatch_source_t _source = nil;
     dispatch_resume(_source);
 }
 
+- (void)stopTickLoop {
+    if (_source != nil) {
+        dispatch_source_cancel(_source);
+        _source = nil;
+    }
+}
+
 - (void)installLoggingCallback {
     // Initialize the logging callback
     [EOSWrapper SetLoggingCallback: ^ (NSString* _Nullable message) {
@@ -165,13 +172,32 @@ dispatch_source_t _source = nil;
         if (HResult == nil) {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Error initializing platform"];
             [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
-            return;
+            return; 
         }
         
         [self installLoginStatusChangeCallback:command];
         
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [result setKeepCallback:@YES];
+        [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
+    }];
+}
+
+- (void)shutdownSDK:(CDVInvokedUrlCommand*)command
+{
+    [self runEOS:^{
+        os_log(OS_LOG_DEFAULT, "Shutdown SDK");
+        if (_isInitialized) {
+            [EOSWrapper ShutdownSDK];
+            [self stopTickLoop];
+            if (_loginCommand != nil) {
+                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                [self.commandDelegate sendPluginResult:result callbackId: _loginCommand.callbackId];
+                _loginCommand = nil;
+            }
+            _isInitialized = false;
+        }
+        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [self.commandDelegate sendPluginResult:result callbackId: command.callbackId];
     }];
 }

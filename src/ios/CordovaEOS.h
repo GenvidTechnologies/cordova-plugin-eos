@@ -28,6 +28,7 @@ API_AVAILABLE(ios(12.0))
 // SDK commands
 - (void)getSDKVersion:(CDVInvokedUrlCommand*)command;
 - (void)initializeSDK:(CDVInvokedUrlCommand*)command;
+- (void)shutdownSDK:(CDVInvokedUrlCommand*)command;
 - (void)onConnect:(CDVInvokedUrlCommand*)command;
 - (void)onDisconnect:(CDVInvokedUrlCommand*)command;
 - (void)logs:(CDVInvokedUrlCommand*)command;

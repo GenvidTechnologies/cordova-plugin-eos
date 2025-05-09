@@ -44,7 +44,7 @@
     <!-- TODO: Use a more useful way to pass those arguments -->
     <info>
         Your environment should contains this variable:
-        EOS_SDK_PATH=path/to/android/sdk/installation/SDK
+        EOS_SDK_PATH=path/to/eos/sdk/installation/SDK
     </info>
 
     <!-- android -->

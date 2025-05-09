@@ -102,9 +102,7 @@ public class CordovaEOS extends CordovaPlugin {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (tickHandler != null) {
-            tickHandler.removeCallbacks(tickRunnable);
-        }
+        stopTickLoop();
     }
 
     @Override
@@ -154,20 +152,35 @@ public class CordovaEOS extends CordovaPlugin {
 
     private boolean handleInitializeSDK(CallbackContext callbackContext, JSONArray args) {
         runOnUiThread(() -> {
-            this.loginStateCallbackContext = callbackContext;
+            loginStateCallbackContext = callbackContext;
             try {
                 if (InitializeEOS(args.getJSONObject(0))) {
                     startTickLoop();
                     sendLoginStatus(IsLoggedIn() ? "loggedIn" : "loggedOut");
                 } else {
-                    this.loginStateCallbackContext = null;
+                    loginStateCallbackContext = null;
                     callbackContext.error("Fail to initialize EOS SDK");
                 }
             } catch(JSONException err) {
-                this.loginStateCallbackContext = null;
+                loginStateCallbackContext = null;
                 callbackContext.error("Invalid argument for initializeSDK: " + err.getMessage());
             }
         });
+        return true;
+    }
+
+
+    private boolean handleShutdownSDK(CallbackContext callbackContext) {
+        runOnUiThread(() -> {
+            Shutdown();
+            stopTickLoop();
+            if (loginStateCallbackContext != null) {
+                loginStateCallbackContext.success();
+                loginStateCallbackContext = null;
+            }
+            callbackContext.success();
+        });
+
         return true;
     }
 
@@ -346,6 +359,8 @@ public class CordovaEOS extends CordovaPlugin {
                 return handleGetSDKVersion(callbackContext);
             case "initializeSDK":
                 return handleInitializeSDK(callbackContext, args);
+            case "shutdownSDK":
+                return handleShutdownSDK(callbackContext);
             case "onConnect":
                 return handleOnConnect(callbackContext);
             case "onDisconnect":
@@ -395,6 +410,12 @@ public class CordovaEOS extends CordovaPlugin {
             }
         };
         tickHandler.post(tickRunnable);
+    }
+
+    private void stopTickLoop() {
+        if (tickHandler != null) {
+            tickHandler.removeCallbacks(tickRunnable);
+        }
     }
 
     // Callback from natives:
@@ -495,6 +516,8 @@ public class CordovaEOS extends CordovaPlugin {
      * Native functions callable from java
      */
     private native boolean InitializeSDK(String ProductName, String ProductVersion, String Path);
+
+    private native void ShutdownSDK();
 
     private native String GetVersion();
 
