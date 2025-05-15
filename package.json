@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-eos",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Cordova EpicGame Online Services Plugin",
   "types": "./types/index.d.ts",
   "cordova": {
@@ -26,6 +26,7 @@
     "download-sdk:ios": "shx mkdir -p eos-sdk/ios && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-IOS-41373641-v1.17.0.zip --account-name burbankbuildwatcher --file eos-sdk/ios/sdk.zip",
     "install-sdk:android:windows": "npm run download-sdk:android && 7z x eos-sdk/android/sdk.zip -oeos-sdk/android/",
     "install-sdk:android:posix": "npm run download-sdk:android && unzip eos-sdk/android/sdk.zip -deos-sdk/android/",
+    "install-sdk:ios:windows": "npm run download-sdk:ios && 7z x eos-sdk/ios/sdk.zip -oeos-sdk/ios/",
     "install-sdk:ios:posix": "npm run download-sdk:ios && unzip eos-sdk/ios/sdk.zip -deos-sdk/ios/",
     "package": "npm pack && (cd tests && npm pack --pack-destination ..)",
     "clean:demo": "git clean -fxd ./demo",

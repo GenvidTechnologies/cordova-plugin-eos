@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-eos-tests",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "cordova": {
     "id": "cordova-plugin-eos-tests",
