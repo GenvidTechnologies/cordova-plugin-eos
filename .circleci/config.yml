@@ -43,9 +43,9 @@ commands:
           command: |
             az login \
               --service-principal \
-              --username ${AZURE_SP_APPID} \
-              --tenant ${AZURE_SP_TENANT} \
-              --password ${AZURE_SP_PASSWORD}
+              --username=${AZURE_SP_APPID} \
+              --tenant=${AZURE_SP_TENANT} \
+              --password=${AZURE_SP_PASSWORD}
   ios-import-certs:
     steps:
       - run:
@@ -113,7 +113,7 @@ jobs:
           command: |
             TAG=<< pipeline.git.tag >>
             BRANCH=<< pipeline.git.branch >>
-            if [ -z "${TAG}"]; then
+            if [ -z "${TAG}" ]; then
               export SLUG=branch/${BRANCH}
             else
               export SLUG=tags/${TAG}
@@ -122,8 +122,8 @@ jobs:
             for file in `ls packages/*.tgz` ; do
               az storage blob upload \
                 --overwrite \
-                -c  'cordova-plugin-eos' \
-                -n "${SLUG}/$(basename ${file})" \
+                -c  'cordova' \
+                -n "<< pipeline.parameters.plugin_name >>/${SLUG}/$(basename ${file})" \
                 --file "${file}"
             done
 
