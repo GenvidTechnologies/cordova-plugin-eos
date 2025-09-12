@@ -4,7 +4,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++17", "-malign-double"
-                arguments "-DANDROID_STL=c++_shared", "-DEOS_SDK_PATH=${System.getenv('EOS_SDK_PATH')}", "-DAPP_BUILD_DIR=${buildDir}"
+                arguments "-DANDROID_STL=c++_shared", "-DEOS_SDK_PATH=${System.getenv('EOS_SDK_PATH')}", "-DAPP_BUILD_DIR=${buildDir}", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
             }
         }
         splits {

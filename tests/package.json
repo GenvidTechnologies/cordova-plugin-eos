@@ -1,10 +1,10 @@
 {
   "name": "cordova-plugin-eos-tests",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "",
   "cordova": {
     "id": "cordova-plugin-eos-tests",
-    "platforms": [ ]
+    "platforms": []
   },
   "keywords": [
     "ecosystem:cordova"
