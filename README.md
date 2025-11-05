@@ -37,12 +37,13 @@ distributing unnecessary files in the packages.
 After having build the packages:
 
 ```bash
-npm run install-sdk:android:windows
-npm run setup:demo
+npm run install-sdk:<platform>:<host>
+npm run setup:demo:<platform>
 npm run build:demo:<platform>
 ```
 
-where `<platform>` is replaced with either `android` or `ios`.
+where `host` is replaced with either `windows` (if you're on Windows) or `posix` (MacOS, Linux),
+and `<platform>` is replaced with either `android` or `ios`
 
 Then you can run the application:
 

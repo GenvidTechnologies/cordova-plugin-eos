@@ -1,6 +1,7 @@
 node_modules/
 *.tgz
 /eos-sdk/
+/eos-sdk-old/
 .DS_Store
 demo/build.json
 *.cer

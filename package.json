@@ -22,8 +22,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "download-sdk:android": "shx mkdir -p eos-sdk/android && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-Android-41373641-v1.17.0.zip --account-name burbankbuildwatcher --file eos-sdk/android/sdk.zip",
-    "download-sdk:ios": "shx mkdir -p eos-sdk/ios && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-IOS-41373641-v1.17.0.zip --account-name burbankbuildwatcher --file eos-sdk/ios/sdk.zip",
+    "download-sdk:android": "shx mkdir -p eos-sdk/android && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-Android-47370208-Release-v1.18.1.2.zip --account-name burbankbuildwatcher --file eos-sdk/android/sdk.zip",
+    "download-sdk:ios": "shx mkdir -p eos-sdk/ios && az storage blob download --overwrite -c 3rd-parties -n eos-sdk/EOS-SDK-IOS-47370208-Release-v1.18.1.2.zip --account-name burbankbuildwatcher --file eos-sdk/ios/sdk.zip",
     "install-sdk:android:windows": "npm run download-sdk:android && 7z x eos-sdk/android/sdk.zip -oeos-sdk/android/",
     "install-sdk:android:posix": "npm run download-sdk:android && unzip eos-sdk/android/sdk.zip -deos-sdk/android/",
     "install-sdk:ios:windows": "npm run download-sdk:ios && 7z x eos-sdk/ios/sdk.zip -oeos-sdk/ios/",
