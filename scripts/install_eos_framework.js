@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-function installEOSFramework (context) {
+function installEOSFramework(context) {
     const framework = path.join(process.env.EOS_SDK_PATH, 'Bin/IOS/EOSSDK.framework');
     console.log(`Copying ${framework}`);
     const destination = path.join(context.opts.plugin.pluginInfo.dir, 'src/ios/EOSSDK.framework');
