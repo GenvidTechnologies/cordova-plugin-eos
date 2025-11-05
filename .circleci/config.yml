@@ -24,7 +24,7 @@ parameters:
   # Hard because used as parameters in many calls.
   plugin_version:
     type: string
-    default: "1.2.2"
+    default: "1.2.3"
   eos_client_id:
     type: string
     default: "xyza7891FuZAOxuG1mBmi3Vun3KNJHBh"

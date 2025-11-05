@@ -22,7 +22,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-eos"
-    version="1.2.2">
+    version="1.2.3">
     <name>EOS</name>
     <description>Cordova Epic Online Services Plugin</description>
     <license>MIT-0</license>
