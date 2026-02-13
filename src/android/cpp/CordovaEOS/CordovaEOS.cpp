@@ -14,7 +14,7 @@
 #include <eos_ui.h>
 #include <eos_version.h>
 #include <eos_ecom.h>
-#include "Android/eos_android.h"
+#include "Android/eos_Android.h"
 
 bool IsSDKInitialized = false;
 EOS_HPlatform PlatformHandle = nullptr;

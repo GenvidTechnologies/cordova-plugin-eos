@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.genvidtech.eosdemo" version="1.2.3" xmlns="http://www.w3.org/ns/widgets"
+<widget id="com.genvidtech.eosdemo" version="1.2.4" xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Genvid Cordova EOS Demo</name>
     <description>Cordova App to test Genvid Epic Online Services Plugin Integration</description>
@@ -9,8 +9,8 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <plugin name="file://../cordova-plugin-eos-1.2.3.tgz" />
-    <plugin name="file://../cordova-plugin-eos-tests-1.2.3.tgz" />
+    <plugin name="file://../cordova-plugin-eos-1.2.4.tgz" />
+    <plugin name="file://../cordova-plugin-eos-tests-1.2.4.tgz" />
     <plugin name="cordova-plugin-test-framework" />
     <platform name="ios">
         <preference name="scheme" value="app" />
