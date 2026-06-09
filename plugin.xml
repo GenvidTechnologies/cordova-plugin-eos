@@ -27,8 +27,8 @@
     <description>Cordova Epic Online Services Plugin</description>
     <license>MIT-0</license>
     <keywords>cordova,eos</keywords>
-    <repo>https://bitbucket.org/genvidtech/cordova-plugin-eos</repo>
-    <issue>https://bitbucket.org/genvidtech/cordova-plugin-eos/issues</issue>
+    <repo>https://github.com/genvid-holdings/cordova-plugin-eos</repo>
+    <issue>https://github.com/genvid-holdings/cordova-plugin-eos/issues</issue>
 
     <engines>
         <engine name="cordova-android" version=">=7.0.0" />

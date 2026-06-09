@@ -1,5 +1,5 @@
 // Type definitions for cordova-plugin-eos
-// Project: https://bitbucket.org/genvidtech/cordova-plugin-eos
+// Project: https://github.com/genvid-holdings/cordova-plugin-eos
 // Definitions by: Microsoft Open Technologies Inc <http://msopentech.com>
 //                 Tim Brust <https://github.com/timbru31>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
