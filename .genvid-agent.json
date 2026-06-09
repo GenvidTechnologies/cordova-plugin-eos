@@ -11,7 +11,7 @@
     "validate": "npm run lint"
   },
   "repo": {
-    "host": "bitbucket",
+    "host": "github",
     "default_branch": "main"
   },
   "features": {},

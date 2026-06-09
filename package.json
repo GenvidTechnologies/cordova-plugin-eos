@@ -10,8 +10,8 @@
       "ios"
     ]
   },
-  "repository": "bitbucket:genvidtech/cordova-plugin-eos",
-  "bugs": "https://bitbucket.org/genvidtech/cordova-plugin-eos/issues",
+  "repository": "github:genvid-holdings/cordova-plugin-eos",
+  "bugs": "https://github.com/genvid-holdings/cordova-plugin-eos/issues",
   "keywords": [
     "cordova",
     "device",
