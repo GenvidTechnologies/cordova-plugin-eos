@@ -1,0 +1,19 @@
+{
+  "project": {
+    "name": "cordova-plugin-eos",
+    "description": "Cordova Epic Online Services (EOS) plugin for Android and iOS",
+    "languages": ["javascript", "java", "cpp", "objective-c"]
+  },
+  "commands": {
+    "test": "",
+    "lint": "npm run lint",
+    "build": "npm run package",
+    "validate": "npm run lint"
+  },
+  "repo": {
+    "host": "bitbucket",
+    "default_branch": "main"
+  },
+  "features": {},
+  "paths": {}
+}
