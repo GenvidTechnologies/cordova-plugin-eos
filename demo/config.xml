@@ -9,7 +9,7 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <plugin name="file://../cordova-plugin-eos-1.2.4.tgz" />
+    <plugin name="file://../genvid-cordova-plugin-eos-1.2.4.tgz" />
     <plugin name="file://../cordova-plugin-eos-tests-1.2.4.tgz" />
     <plugin name="cordova-plugin-test-framework" />
     <platform name="ios">
