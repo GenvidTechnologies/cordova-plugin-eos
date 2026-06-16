@@ -44,7 +44,7 @@
     "setup:demo:ios": "cd demo && npm --prefix . install -D ios-deploy xcode && npx --prefix . cordova platform add ios",
     "setup:demo:sim:ios": "cd demo && npx --prefix . cordova platform add ios",
     "build:demo:ios": "cd demo && npx --prefix . cordova build ios --device",
-    "build:demo:ios:sim": "cd demo && npx --prefix . cordova build ios",
+    "build:demo:ios:nosign": "cd demo && npx --prefix . cordova build ios --device -- --buildFlag='CODE_SIGNING_ALLOWED=NO' --buildFlag='CODE_SIGNING_REQUIRED=NO' --buildFlag='CODE_SIGN_IDENTITY='",
     "build:demo:ios:release": "cd demo && npx --prefix . cordova build ios --device --release",
     "run:ios": "cd demo && npx --prefix . cordova run ios --device",
     "refresh:common": "npm run package && npm run clean:demo && npm run setup:demo",

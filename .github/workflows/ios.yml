@@ -1,8 +1,11 @@
 name: iOS
 
 # Two tiers:
-#   smoke      - compile/link the demo app with the plugin for the SIMULATOR on
-#                every PR and push to main.
+#   smoke      - compile/link the demo app with the plugin for DEVICE (arm64),
+#                UNSIGNED, on every PR and push to main. The EOS iOS SDK framework
+#                ships only a device (arm64) slice — no simulator slice — so a
+#                simulator build fails to link (symbol(s) not found for x86_64).
+#                CODE_SIGNING_ALLOWED=NO lets us compile/link without a cert.
 #   distribute - DEFERRED (if: false). Would build a Development-signed .ipa for
 #                ad-hoc sideloading. See the TODO on the distribute job below.
 #
@@ -32,16 +35,14 @@ env:
 
 jobs:
   smoke:
-    name: Smoke build (simulator)
+    name: Smoke build (unsigned device compile/link)
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: macos-15
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      # latest-stable always has a matching simulator runtime installed; pinning a
-      # specific Xcode can select an SDK whose runtime isn't on the image and fails
-      # asset-catalog compilation with "No simulator runtime version available".
+      # latest-stable avoids pinning an Xcode whose SDK/runtime isn't on the image.
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
@@ -69,8 +70,8 @@ jobs:
         run: npm run setup:demo:config:eos
       - name: Add iOS platform (copies EOSSDK.framework via EOS_SDK_PATH)
         run: npm run setup:demo:sim:ios
-      - name: Build demo for simulator (compile/link smoke)
-        run: npm run build:demo:ios:sim
+      - name: Build demo unsigned for device (compile/link smoke)
+        run: npm run build:demo:ios:nosign
 
   distribute:
     name: Signed .ipa (sideload artifact)
