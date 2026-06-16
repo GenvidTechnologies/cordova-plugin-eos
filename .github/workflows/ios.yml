@@ -5,7 +5,10 @@ name: iOS
 #                UNSIGNED, on every PR and push to main. The EOS iOS SDK framework
 #                ships only a device (arm64) slice — no simulator slice — so a
 #                simulator build fails to link (symbol(s) not found for x86_64).
-#                CODE_SIGNING_ALLOWED=NO lets us compile/link without a cert.
+#                We run `xcodebuild build` directly with CODE_SIGNING_ALLOWED=NO:
+#                `cordova build ios --device` would force a signed .ipa export
+#                (EXPORT FAILED / "No Team Found"), which a compile/link smoke
+#                neither needs nor can do without a cert.
 #   distribute - DEFERRED (if: false). Would build a Development-signed .ipa for
 #                ad-hoc sideloading. See the TODO on the distribute job below.
 #
