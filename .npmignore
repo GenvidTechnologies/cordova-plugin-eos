@@ -4,6 +4,7 @@
 /demo/
 /eos-sdk/
 /ios-build.json
+/scripts/version-guard.js
 *.tgz
 *.cer
 *.p12

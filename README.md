@@ -1,5 +1,18 @@
 # Cordova Epic Online Services Plugin
 
+Published on npm as [`@genvid/cordova-plugin-eos`](https://www.npmjs.com/package/@genvid/cordova-plugin-eos)
+with build provenance.
+
+## Installation
+
+```bash
+cordova plugin add @genvid/cordova-plugin-eos
+```
+
+The EOS SDK binary is not bundled: set `EOS_SDK_PATH` to your unpacked EOS SDK
+root before building so the plugin's install hook can resolve the native
+framework/AAR.
+
 ## Development
 
 ### File structures
@@ -24,7 +37,7 @@ npm run package
 
 This will create two package:
 
-* `cordova-plugin-eos-<version>.tgz` for the plugin
+* `genvid-cordova-plugin-eos-<version>.tgz` for the plugin (the `@genvid`-scoped npm package)
 * `cordova-plugin-eos-tests-<version>.tgz` for the tests
 
 #### Notice

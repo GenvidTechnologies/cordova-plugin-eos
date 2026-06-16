@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "lib": ["ES2020"],
+    "types": [],
+    "strict": true
+  },
+  "files": ["types/index.d.ts"]
+}

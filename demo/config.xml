@@ -9,11 +9,14 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <plugin name="file://../cordova-plugin-eos-1.2.4.tgz" />
+    <plugin name="file://../genvid-cordova-plugin-eos-1.2.4.tgz" />
     <plugin name="file://../cordova-plugin-eos-tests-1.2.4.tgz" />
     <plugin name="cordova-plugin-test-framework" />
     <platform name="ios">
         <preference name="scheme" value="app" />
         <preference name="hostname" value="localhost" />
+        <!-- EOSSDK.framework's MinimumOSVersion is 15.0; cordova-ios defaults to a
+             lower target, which fails to link, so pin >=15. -->
+        <preference name="deployment-target" value="15.0" />
     </platform>
 </widget>
