@@ -15,5 +15,8 @@
     <platform name="ios">
         <preference name="scheme" value="app" />
         <preference name="hostname" value="localhost" />
+        <!-- EOSSDK.framework's MinimumOSVersion is 15.0; cordova-ios defaults to a
+             lower target, which fails to link, so pin >=15. -->
+        <preference name="deployment-target" value="15.0" />
     </platform>
 </widget>
