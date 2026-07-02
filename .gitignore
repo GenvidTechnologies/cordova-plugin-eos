@@ -6,3 +6,4 @@ node_modules/
 demo/build.json
 *.cer
 *.p12
+plan.md
