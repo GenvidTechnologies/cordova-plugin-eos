@@ -1,5 +1,5 @@
 {
     "circleci.persistedProjectSelection": [
-        "gh/genvid-holdings/cordova-plugin-eos"
+        "gh/GenvidTechnologies/cordova-plugin-eos"
     ]
 }
