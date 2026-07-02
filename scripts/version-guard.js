@@ -3,15 +3,15 @@
 
 // Guards the version lockstep that `npm run setup:demo` depends on.
 //
-// `npm run package` produces `genvid-cordova-plugin-eos-<version>.tgz` (the
-// @genvid-scoped plugin) and `cordova-plugin-eos-tests-<version>.tgz` (the
+// `npm run package` produces `genvidtech-cordova-plugin-eos-<version>.tgz` (the
+// @genvidtech-scoped plugin) and `cordova-plugin-eos-tests-<version>.tgz` (the
 // unscoped tests harness). `demo/config.xml` pins
 // those exact filenames (and a widget version). If `package.json` /
 // `tests/package.json` are bumped without updating `demo/config.xml`, the CI
 // jobs fail late and opaquely inside `cordova platform add`. This check fails
 // fast and explains why.
 //
-// Adapted from genvid-holdings/cordova-plugin-marketplace@9b6721b
+// Adapted from GenvidTechnologies/cordova-plugin-marketplace@9b6721b
 // (scripts/version-guard.js); stems substituted for this plugin.
 
 const fs = require('fs');
@@ -37,7 +37,7 @@ const testsVersion = versionOf('tests/package.json');
 
 const configXml = fs.readFileSync(path.join(root, 'demo', 'config.xml'), 'utf8');
 const widgetVersion = firstMatch(configXml, /<widget[^>]*\sversion="([^"]+)"/, 'widget version');
-const pluginPin = firstMatch(configXml, /genvid-cordova-plugin-eos-([\d.]+)\.tgz/, 'plugin .tgz pin');
+const pluginPin = firstMatch(configXml, /genvidtech-cordova-plugin-eos-([\d.]+)\.tgz/, 'plugin .tgz pin');
 const testsPin = firstMatch(configXml, /cordova-plugin-eos-tests-([\d.]+)\.tgz/, 'tests .tgz pin');
 
 const checks = [

@@ -1,5 +1,5 @@
 {
-  "name": "@genvid/cordova-plugin-eos",
+  "name": "@genvidtech/cordova-plugin-eos",
   "version": "1.2.4",
   "description": "Cordova EpicGame Online Services Plugin",
   "types": "./types/index.d.ts",
@@ -23,10 +23,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/genvid-holdings/cordova-plugin-eos.git"
+    "url": "git+https://github.com/GenvidTechnologies/cordova-plugin-eos.git"
   },
-  "homepage": "https://github.com/genvid-holdings/cordova-plugin-eos#readme",
-  "bugs": "https://github.com/genvid-holdings/cordova-plugin-eos/issues",
+  "homepage": "https://github.com/GenvidTechnologies/cordova-plugin-eos#readme",
+  "bugs": "https://github.com/GenvidTechnologies/cordova-plugin-eos/issues",
   "keywords": [
     "cordova",
     "device",
