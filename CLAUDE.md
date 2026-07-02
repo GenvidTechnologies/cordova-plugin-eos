@@ -31,7 +31,7 @@ npm run lint:fix   # autofix
 npm run package    # npm pack the plugin AND the tests → two .tgz files
 ```
 
-`npm run package` produces `genvidtech-cordova-plugin-eos-<version>.tgz` (the `@genvidtech`-scoped plugin) and `cordova-plugin-eos-tests-<version>.tgz` (the unscoped tests harness). The published plugin tarball is constrained by the `files` allowlist in `package.json` (plugin.xml, `www/`, `src/`, `types/`, and the two install-hook scripts) — keep it tight so the EOS SDK, demo, legacy `eos-sdk-old/`, and tests don't leak into the package.
+`npm run package` produces `genvidtech-cordova-plugin-eos-<version>.tgz` (the `@genvidtech`-scoped plugin) and `cordova-plugin-eos-tests-<version>.tgz` (the unscoped tests harness). The plugin tarball's basename is **derived from the npm scope** — `npm pack` renders `@genvidtech/cordova-plugin-eos` as `genvidtech-cordova-plugin-eos-*.tgz` — so changing the scope in `package.json` renames the tarball, which must be tracked in lockstep by the `demo/config.xml` plugin pin and the `genvidtech-cordova-plugin-eos-...` regex in `scripts/version-guard.js`. The published plugin tarball is constrained by the `files` allowlist in `package.json` (plugin.xml, `www/`, `src/`, `types/`, and the two install-hook scripts) — keep it tight so the EOS SDK, demo, legacy `eos-sdk-old/`, and tests don't leak into the package.
 
 ### EOS SDK download (requires Azure auth)
 
