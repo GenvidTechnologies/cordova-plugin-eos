@@ -1,3 +1,10 @@
+---
+type: convention
+title: Issue Triage Conventions
+description: Issue triage conventions (labels, duplicates, dependencies, mutation recipes) for /gvt-dev:triage-issues.
+tags: [process, triage]
+---
+
 # Issue Triage Conventions
 
 > Project conventions consumed by `/gvt-dev:triage-issues`. The skill copies this

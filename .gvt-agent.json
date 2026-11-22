@@ -16,6 +16,9 @@
   },
   "features": {},
   "paths": {},
+  "wiki": {
+    "wikiDir": "wiki"
+  },
   "bugTracker": {
     "kind": "github",
     "actionQuery": "gh issue list --repo GenvidTechnologies/cordova-plugin-eos --state open -L 200 --json number,title,labels,body,assignees,author,createdAt,milestone",
