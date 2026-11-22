@@ -17,5 +17,6 @@ the full maintenance schema.
 
 ## 2026-11-22
 
+* **Update**: schema.md — replaced the `stale_after` TODO with this project's rule (retro of GenvidTechnologies/cordova-plugin-eos#8).
 * **Creation**: index.md, log.md, schema.md and `raw/README.md`, scaffolded from the `gvt-wiki` 0.2.0 templates (GenvidTechnologies/cordova-plugin-eos#8).
 * **Creation**: issue-triage.md, moved unchanged from `docs/issue-triage.md` with OKF frontmatter added. `docs/TOC.md` became index.md, and `docs/` was removed (GenvidTechnologies/cordova-plugin-eos#8).

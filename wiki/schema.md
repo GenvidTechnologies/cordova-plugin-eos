@@ -214,9 +214,17 @@ Choose `stale_after` by the topic's own volatility, not a fixed default:
   gets a `stale_after` a year out, or omits the key entirely if it's expected
   to stay true indefinitely.
 
-<!-- TODO: describe this project's own stale_after judgment rule, e.g.:
-"Pages about in-flight tooling get stale_after 3-6 months out; pages about
-settled architecture omit stale_after or set it a year out." -->
+This project's rule:
+
+- A page about a pinned external version (the EOS SDK version in the
+  `download-sdk:*` scripts, a GitHub Actions version, a gvt-dev or gvt-wiki
+  plugin version) gets a `stale_after` 6 months out. These pins move with
+  upstream releases.
+- A page about CI, release or demo-build procedure gets a `stale_after` 6
+  months out.
+- A process convention (for example `issue-triage.md`) or a description of
+  the plugin's layered architecture omits `stale_after`. It changes only by
+  a deliberate edit, and that edit updates the page.
 
 ## The verb contract
 
